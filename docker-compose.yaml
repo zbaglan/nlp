@@ -1,0 +1,26 @@
+version: "2.1"
+services:
+  test:
+    build: .
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATASOURCE_URL: jdbc:postgresql://localhost:5432/toTestDb
+      DATASOURCE_USERNAME: postgres
+      DATASOURCE_PASSWORD: 1234
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 1234
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30

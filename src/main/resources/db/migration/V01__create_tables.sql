@@ -1,0 +1,15 @@
+CREATE TABLE affixes (
+    id               BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
+    ending           VARCHAR,
+    translate_ending VARCHAR
+);
+
+CREATE TABLE stem_words (
+    id   BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
+    word VARCHAR
+);
+
+CREATE TABLE stop_words (
+    id   BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
+    word VARCHAR
+);
