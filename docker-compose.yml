@@ -2,25 +2,36 @@ version: "2.1"
 services:
   test:
     build: .
-    restart: always
+    network_mode: host
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      DATASOURCE_URL: jdbc:postgresql://localhost:5432/toTestDb
+      DATASOURCE_URL: jdbc:postgresql://postgres:5432/test
       DATASOURCE_USERNAME: postgres
       DATASOURCE_PASSWORD: 1234
   postgres:
-    image: postgres
+    build: postgre/
     restart: always
     ports:
-      - "5432:5432"
+    - 5432
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: test
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 1s
       timeout: 3s
       retries: 30
+    network_mode: host
+
+  nginx:
+    build: ./nginx/.
+    ports:
+      - "80:80"
+    environment:
+      BACKEND: ${BACKEND}
+    mem_limit: 299m

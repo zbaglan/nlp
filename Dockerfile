@@ -6,4 +6,6 @@ COPY pom.xml /usr/local/service/pom.xml
 COPY src /usr/local/service/src
 WORKDIR /usr/local/service
 RUN mvn package
-CMD ["java", "-cp","target/test-1.0-SNAPSHOT.jar","com.nlp.test.TestApplication"]
+COPY ["target/test-1.0-*.jar", "start.sh", "/usr/local/service/"]
+CMD ["sh", "start.sh"]
+
