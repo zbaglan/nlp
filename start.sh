@@ -1,2 +1,4 @@
-JAR=test-1.0-*.jar
-java -Xmx512m -jar $JAR
+#!/bin/bash
+
+docker-compose up -d postgres app
+docker-compose logs -f app

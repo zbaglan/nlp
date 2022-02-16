@@ -1,37 +1,32 @@
-version: "2.1"
+version: "3.6"
 services:
-  test:
+  app:
+    restart: always
     build: .
-    network_mode: host
+    links:
+      - postgres
     ports:
-      - "8081:80"
+      - 8080:8080
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     environment:
-      DATASOURCE_URL: jdbc:postgresql://postgres:5432/test
-      DATASOURCE_USERNAME: postgres
-      DATASOURCE_PASSWORD: 1234
+      DB_HOST: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+      DB_NAME: nlp
   postgres:
-    build: postgre/
+    image: postgres:13
     restart: always
     ports:
-    - 5432
+    - 5433:5432
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: test
-    healthcheck:
-      test: [ "CMD", "pg_isready" ]
-      interval: 1s
-      timeout: 3s
-      retries: 30
-    network_mode: host
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: nlp
+      PGDATA: /postgresql/data/pgdata
+    volumes:
+    - ./dump:/docker-entrypoint-initdb.d
 
-  nginx:
-    build: ./nginx/.
-    ports:
-      - "80:80"
-    environment:
-      BACKEND: ${BACKEND}
-    mem_limit: 299m
+volumes:
+  dump:
