@@ -8,4 +8,3 @@ WORKDIR /usr/local/service
 RUN mvn clean package
 ADD target/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
-

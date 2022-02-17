@@ -58,4 +58,10 @@ public class MainController {
         map.put(stemWords.size(), stemWords);
         return ResponseEntity.ok(map);
     }
+
+    @GetMapping("/get-result")
+    public byte[] getFile() throws IOException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("result.txt");
+        return IOUtils.toByteArray(inputStream);
+    }
 }
