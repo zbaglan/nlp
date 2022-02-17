@@ -61,7 +61,7 @@ public class MainController {
 
     @GetMapping("/get-result")
     public byte[] getFile() throws IOException {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("result.txt");
-        return IOUtils.toByteArray(inputStream);
+        InputStream in = parserService.getAnalysedText();
+        return IOUtils.toByteArray(in);
     }
 }

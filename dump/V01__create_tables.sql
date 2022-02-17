@@ -13,3 +13,8 @@ CREATE TABLE stop_words (
     id   BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
     word VARCHAR
 );
+
+CREATE TABLE analysed_text (
+    id   BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
+    text VARCHAR
+);

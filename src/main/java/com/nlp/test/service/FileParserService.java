@@ -13,13 +13,13 @@ import com.nlp.test.repository.StemWordRepository;
 import com.nlp.test.repository.StopWordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class FileParserService {
@@ -33,6 +33,7 @@ public class FileParserService {
     private final StemWordParser stemWordParser;
     private final StopWordParser stopWordParser;
     private final AnalysisFileParser analysisFileParser;
+    private final EntityManager em;
 
     public List<Affix> parseAffixFile(InputStream bytes) {
 
@@ -63,9 +64,15 @@ public class FileParserService {
         for (String s : parse) {
             String[] split = s.split(" ");
             strings.addAll(Arrays.asList(split));
+            strings.add("/n");
         }
 
         for (String word : strings) {
+            if (Objects.equals("/n", word)) {
+                builder.append("\n");
+                continue;
+            }
+
             Optional<StopWord> stopWord = stopWordRepository.findByWord(word.toLowerCase()).stream().findFirst();
             if (stopWord.isPresent()) {
                 builder.append(word).append(EMPTY);
@@ -103,9 +110,17 @@ public class FileParserService {
                 builder.append(word).append(EMPTY);
             }
         }
+        String analysedText = builder.toString();
 
+        saveAnalysedText(analysedText);
 
-        return writeToFile(builder.toString());
+        return writeToFile(analysedText);
+    }
+
+    private void saveAnalysedText(String analysedText) {
+        em.createNativeQuery("INSERT INTO analysed_text(text) VALUES (:analysedText)")
+                .setParameter("analysedText", analysedText)
+                .executeUpdate();
     }
 
     private File writeToFile(String data) {
@@ -125,5 +140,12 @@ public class FileParserService {
             e.printStackTrace();
         }
         return file;
+    }
+
+    public InputStream getAnalysedText() {
+        Object[] singleResult = (Object[]) em.createNativeQuery("SELECT * FROM analysed_text ORDER BY id DESC LIMIT 1")
+                .getSingleResult();
+        String text = (String) singleResult[1];
+        return new ByteArrayInputStream(text.getBytes());
     }
 }
