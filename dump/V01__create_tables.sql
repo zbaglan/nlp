@@ -18,3 +18,8 @@ CREATE TABLE analysed_text (
     id   BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
     text VARCHAR
 );
+
+CREATE TABLE stemming_text (
+                               id   BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
+                               text VARCHAR
+);

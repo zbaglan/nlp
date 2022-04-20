@@ -7,16 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class StemWordParser implements Parser<StemWord> {
     @Override
-    public List<StemWord> parse(InputStream fileBytes) {
+    public Set<StemWord> parse(InputStream fileBytes) {
 
-        List<StemWord> stemWords = new ArrayList<>();
+        Set<StemWord> stemWords = new HashSet<>();
 
         try {
             Workbook workbook = WorkbookFactory.create(fileBytes);

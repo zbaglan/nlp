@@ -9,14 +9,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class StopWordParser implements Parser<StopWord> {
     @Override
-    public List<StopWord> parse(InputStream fileBytes) {
+    public Set<StopWord> parse(InputStream fileBytes) {
 
-        List<StopWord> stopWords = new ArrayList<>();
+        Set<StopWord> stopWords = new HashSet<>();
 
         try {
              InputStreamReader isr = new InputStreamReader(fileBytes,

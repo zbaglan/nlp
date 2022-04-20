@@ -5,21 +5,20 @@ import com.nlp.test.parser.Parser;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class AffixFileParser implements Parser<Affix> {
 
     @Override
-    public List<Affix> parse(InputStream fileBytes) {
+    public Set<Affix> parse(InputStream fileBytes) {
 
-        List<Affix> affixes = new ArrayList<>();
+        Set<Affix> affixes = new HashSet<>();
 
         try {
 
@@ -50,10 +49,9 @@ public class AffixFileParser implements Parser<Affix> {
             e.printStackTrace();
         }
 
-
         return affixes.stream()
-                .filter(affix -> affix.getEnding() != null && !affix.getEnding().isEmpty())
-                .collect(Collectors.toList());
+                .filter(affix -> !StringUtils.isEmpty(affix.getEnding()))
+                .collect(Collectors.toSet());
 
     }
 }

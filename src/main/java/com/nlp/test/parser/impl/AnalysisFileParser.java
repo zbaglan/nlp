@@ -7,15 +7,15 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class AnalysisFileParser implements Parser<String> {
     @Override
-    public List<String> parse(InputStream fileBytes) {
+    public Set<String> parse(InputStream fileBytes) {
 
-        List<String> result = new ArrayList<>();
+        Set<String> result = new HashSet<>();
 
         try {
             InputStreamReader isr = new InputStreamReader(fileBytes,

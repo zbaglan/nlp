@@ -8,4 +8,5 @@ public class Constants {
 
     public static final String BASE_API = "/api";
     public static final String FILE_NAME = "src/main/resources/result.txt";
+    public static final String EMPTY = " ";
 }
