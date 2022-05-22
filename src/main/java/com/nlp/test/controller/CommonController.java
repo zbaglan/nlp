@@ -1,6 +1,8 @@
 package com.nlp.test.controller;
 
 import com.nlp.test.constants.Constants;
+import com.nlp.test.dto.RequestDto;
+import com.nlp.test.dto.ResponseDto;
 import com.nlp.test.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.IOUtils;
@@ -18,15 +20,15 @@ public class CommonController {
 
     private final CommonService commonService;
 
-    @PostMapping("/stemming")
-    public ResponseEntity<String> inputForStemming(@RequestParam("file") MultipartFile file) throws IOException {
-        String stemmingText = commonService.getStemmingText(file.getInputStream());
+    @PostMapping(value = "/stemming", consumes = "application/json")
+    public ResponseEntity<String> inputForStemming(@RequestBody RequestDto dto) {
+        String stemmingText = commonService.getStemmingText(dto.getValue());
         return ResponseEntity.ok(stemmingText);
     }
 
     @PostMapping("/analyse")
-    public ResponseEntity<String> inputForAnalysing(@RequestParam("file") MultipartFile file) throws IOException {
-        String analysedText = commonService.getAnalysedText(file.getInputStream());
+    public ResponseEntity<String> inputForAnalysing(@RequestBody RequestDto dto) throws IOException {
+        String analysedText = commonService.getAnalysedText(dto.getValue());
         return ResponseEntity.ok(analysedText);
     }
 

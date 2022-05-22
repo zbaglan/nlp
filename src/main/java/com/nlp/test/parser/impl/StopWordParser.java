@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -21,9 +19,9 @@ public class StopWordParser implements Parser<StopWord> {
         Set<StopWord> stopWords = new HashSet<>();
 
         try {
-             InputStreamReader isr = new InputStreamReader(fileBytes,
-                     StandardCharsets.UTF_8);
-             BufferedReader br = new BufferedReader(isr);
+            InputStreamReader isr = new InputStreamReader(fileBytes,
+                    StandardCharsets.UTF_8);
+            BufferedReader br = new BufferedReader(isr);
 
             br.lines().forEach(line -> stopWords.add(new StopWord(line.toLowerCase())));
         } catch (Exception e) {
